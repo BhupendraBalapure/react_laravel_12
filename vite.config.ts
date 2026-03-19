@@ -4,6 +4,8 @@ import react from '@vitejs/plugin-react';
 import laravel from 'laravel-vite-plugin';
 import { defineConfig } from 'vite';
 
+const isCI = process.env.RENDER === 'true' || process.env.CI === 'true';
+
 export default defineConfig({
     plugins: [
         laravel({
@@ -17,9 +19,7 @@ export default defineConfig({
             },
         }),
         tailwindcss(),
-        wayfinder({
-            formVariants: true,
-        }),
+        ...(!isCI ? [wayfinder({ formVariants: true })] : []),
     ],
     esbuild: {
         jsx: 'automatic',
